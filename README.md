@@ -21,7 +21,7 @@ Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipe
 <p align="middle">
   <img src="docs/materials/benchmarks/Validation_benchmark.jpg" width="800" />
 <p align="middle">
-    <em >Validation of benchmark problems in JAX-PF, including the Allan-Cahn equation for non-conserved PF variable, the Cahn-Hilliard equation for conserved PF variable, and the Eshelby inclusion problem capturing displacement fields around a misfitting inclusion. While PRISMS-PF implements explicit time integration, JAX-PF provides both explicit and implicit schemes, with results showing agreement between the two frameworks.</em>
+    <em >Validation of benchmark problems in JAX-PF. While PRISMS-PF implements explicit time integration, JAX-PF provides both explicit and implicit schemes, with results showing agreement between the two frameworks.</em>
 </p>
 
 
