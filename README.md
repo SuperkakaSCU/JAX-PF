@@ -10,6 +10,7 @@ We want to emphasize the following four features that differential JAX-PF from o
 
 :fire: ***Join us for the development of JAX-PF! This project is under active development!***
 
+<br>
 
 ## Applications
 ### Benchmarks
