@@ -8,20 +8,18 @@ We want to emphasize the following four features that differential JAX-PF from o
 - __Unified multiscale ecosystem with JAX-CPFEM__: Built on the same JAX-FEM foundation, JAX-PF integrates seamlessly with [JAX-CPFEM](https://github.com/SuperkakaSCU/JAX-CPFEM) to enable coupled process–structure–property simulations (e.g., dynamic recrystallization), while preserving full differentiability for optimization and design.
   
 
-:fire: ***For each case, both explicit and implicit time stepping schemes are provided***
 :fire: ***Join us for the development of JAX-PF! This project is under active development!***
 
 
 ## Applications
 ### Benchmarks
-four benchmark problems are provided, including Allen–Cahn, Cahn–Hilliard, coupled Allen–Cahn and Cahn–Hilliard, each implemented with both explicit and implicit time integration, and Eshelby inclusion for lattice misfit in solid-state phase transformations.
+Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipedia.org/wiki/Allen%E2%80%93Cahn_equation), [Cahn–Hilliard](https://en.wikipedia.org/wiki/Cahn%E2%80%93Hilliard_equation), coupled Allen–Cahn and Cahn–Hilliard, each implemented with both explicit and implicit time integration, and [Eshelby inclusion](https://en.wikipedia.org/wiki/Eshelby%27s_inclusion) for lattice misfit in solid-state phase transformations.
 
 :mega: JAX-PF reproduces the benchmark results with good agreement to [PRISMS-PF](https://github.com/prisms-center/phaseField).
 
 
 <p align="middle">
   <img src="docs/materials/benchmarks/Validation_benchmark.jpg" width="800" />
-</p>
 <p align="middle">
     <em >Validation of benchmark problems in JAX-PF, including the Allan-Cahn equation for non-conserved PF variable, the Cahn-Hilliard equation for conserved PF variable, and the Eshelby inclusion problem capturing displacement fields around a misfitting inclusion. While PRISMS-PF implements explicit time integration, JAX-PF provides both explicit and implicit schemes, with results showing agreement between the two frameworks.</em>
 </p>
@@ -31,54 +29,53 @@ four benchmark problems are provided, including Allen–Cahn, Cahn–Hilliard, c
 ### Forward Case Studies
 Several representative applications are included, ranging from solidification to solid-state transformations: grain growth, static recrystallization, spinodal decomposition, precipitation with the Wheeler–Boettinger–McFadden (WBM) model, and precipitation with the Kim–Kim–Suzuki (KKS) model. 
 
+:fire: ***For each case, both explicit and implicit time stepping schemes are provided***
 
 <p align="middle">
-  <img src="docs/materials/applications/Case1_IC.png" width="360" />
-  <img src="docs/materials/applications/Case1_F.png" width="360" />
-</p>
+  <img src="docs/materials/applications/Case1_IC.png" width="200" />
+  <img src="docs/materials/applications/Case1_F.png" width="200" />
 <p align="middle">
     <em >The initial (left) and final (right) grain structure for a 2D grain growth simulation.</em>
 </p>
 <br>
-
+<br>
 
 
 <p align="middle">
-  <img src="docs/materials/applications/Case2_IC.png" width="360" />
-  <img src="docs/materials/applications/Case2_F.png" width="360" />
-</p>
+  <img src="docs/materials/applications/Case2_IC.png" width="300" />
+  <img src="docs/materials/applications/Case2_F.png" width="300" />
 <p align="middle">
     <em >The distribution of composition during a simulation of spinodal decomposition from initial fluctuations (left) to final two distinct phases (right).</em>
 </p>
 <br>
-
+<br>
 
 
 <p align="middle">
-  <img src="docs/materials/applications/Case3.png" width="800" />
-</p>
+  <img src="docs/materials/applications/Case3.png" width="500" />
 <p align="middle">
     <em >A 2D simulations of the multi-variants precipitate in an Mg-Nd alloy were simulated using different frameworks, based on Wheeler-Boettinger-McFadden (WBM) model.</em>
 </p>
-
+<br>
+<br>
 
 
 <p align="middle">
-  <img src="docs/materials/applications/Case4.png" width="800" />
-</p>
+  <img src="docs/materials/applications/Case4.png" width="500" />
 <p align="middle">
     <em >A 3D simulations of the single-variants precipitate in an Mg-Nd alloy were simulated using different frameworks, based on Kim-Kim-Suzuki (KKS) model.</em>
 </p>
-
+<br>
+<br>
 
 
 <p align="middle">
   <img src="docs/materials/applications/Case5.gif" width="800" />
-</p>
 <p align="middle">
     <em >Simulated recrystallized microstructure. White color represents the new recrystallized grains, and black color represents grain boundaries.</em>
 </p>
-
+<br>
+<br>
 
 
 ### Multiscale Simulations
@@ -87,7 +84,6 @@ Several representative applications are included, ranging from solidification to
 
 <p align="middle">
   <img src="docs/materials/applications/CPPF.png" width="800" />
-</p>
 <p align="middle">
     <em >Coupled JAX-PF and JAX-CPFEM framework for process–structure–property integration.</em>
 </p>
@@ -97,7 +93,6 @@ Several representative applications are included, ranging from solidification to
 ### Inverse Design
 :mega: Comming soon!!
 <br>
-
 
 
 
