@@ -92,7 +92,14 @@ Several representative applications are included, ranging from solidification to
 
 
 ### Inverse Design
-:mega: Comming soon!!
+:mega: A demos: calibration of material parameters using differentiable phase-field simulations.
+
+<p align="middle">
+  <img src="docs/materials/inverse/calibration.png" width="550" />
+<p align="middle">
+    <em >Calibration of material parameters using differentiable PF simulations for multi-variants in Mg-Nd alloys. Subfigure (a) shows the evolution of the objective function with the number of optimization iterations, based on the synthetic imaging of the microstructure as the ground truth, as shown in the bottom subfigure in Fig. 6. Subfigure (b) shows the comparison between reference and calibrated material parameters.Subfigure (c) shows the comparison between the reference (red) and calibrated (blue) microstructural morphology of the different variants, with precipitate variants identified by concentrations in the range 0.12 to 0.16. Subfigure (d) and (e) shows the Concentration distributions for the reference and calibrated results across the domain.</em>
+</p>
+<br>
 <br>
 
 
