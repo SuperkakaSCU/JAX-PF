@@ -32,8 +32,8 @@ Several representative applications are included, ranging from solidification to
 :fire: ***For each case, both explicit and implicit time stepping schemes are provided***
 
 <p align="middle">
-  <img src="docs/materials/applications/Case1_IC.png" width="200" />
-  <img src="docs/materials/applications/Case1_F.png" width="200" />
+  <img src="docs/materials/applications/Case1_IC.png" width="220" />
+  <img src="docs/materials/applications/Case1_F.png" width="220" />
 <p align="middle">
     <em >The initial (left) and final (right) grain structure for a 2D grain growth simulation.</em>
 </p>
@@ -52,7 +52,7 @@ Several representative applications are included, ranging from solidification to
 
 
 <p align="middle">
-  <img src="docs/materials/applications/Case3.png" width="500" />
+  <img src="docs/materials/applications/Case3.png" width="550" />
 <p align="middle">
     <em >A 2D simulations of the multi-variants precipitate in an Mg-Nd alloy were simulated using different frameworks, based on Wheeler-Boettinger-McFadden (WBM) model.</em>
 </p>
@@ -61,21 +61,19 @@ Several representative applications are included, ranging from solidification to
 
 
 <p align="middle">
-  <img src="docs/materials/applications/Case4.png" width="500" />
+  <img src="docs/materials/applications/Case4.png" width="550" />
 <p align="middle">
     <em >A 3D simulations of the single-variants precipitate in an Mg-Nd alloy were simulated using different frameworks, based on Kim-Kim-Suzuki (KKS) model.</em>
 </p>
-<br>
-<br>
+
 
 
 <p align="middle">
-  <img src="docs/materials/applications/Case5.gif" width="800" />
+  <img src="docs/materials/applications/Case5.gif" width="550" />
 <p align="middle">
     <em >Simulated recrystallized microstructure. White color represents the new recrystallized grains, and black color represents grain boundaries.</em>
 </p>
-<br>
-<br>
+
 
 
 ### Multiscale Simulations
