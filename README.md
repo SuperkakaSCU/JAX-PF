@@ -69,9 +69,8 @@ Several representative applications are included, ranging from solidification to
 
 
 <p align="middle">
-  <img src="docs/materials/applications/Case5.gif" width="550" />
-<p align="middle">
-    <em >Simulated recrystallized microstructure. White color represents the new recrystallized grains, and black color represents grain boundaries.</em>
+  <img src="docs/materials/applications/Case5.gif" width="550" /><br>
+  <em>Simulated recrystallized microstructure. White color represents the new recrystallized grains, and black color represents grain boundaries.</em>
 </p>
 
 
