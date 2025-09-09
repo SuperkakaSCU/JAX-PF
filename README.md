@@ -130,4 +130,6 @@ from the root directory. Use [Paraview](https://www.paraview.org/) for visualiza
 :mega: Comming soon!
 
 ## Citations
-If you found this library useful in academic or industry work, we appreciate your support if you consider starring the project on Github.
+If you found this library useful in academic or industry work, we appreciate your support if you consider 1) starring the project on Github, and 2) citing relevant papers:
+1) Efficient GPU-computing simulation platform JAX-CPFEM for differentiable crystal plasticity finite element method.
+   DOI: https://doi.org/10.1038/s41524-025-01528-2
