@@ -27,6 +27,7 @@ Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipe
 
 <br>
 <br>
+
 ### Forward Case Studies
 Several representative applications are included, ranging from solidification to solid-state transformations: grain growth, static recrystallization, spinodal decomposition, precipitation with the Wheeler–Boettinger–McFadden (WBM) model, and precipitation with the Kim–Kim–Suzuki (KKS) model. 
 
@@ -76,6 +77,7 @@ Several representative applications are included, ranging from solidification to
 
 <br>
 <br>
+
 ### Multiscale Simulations
 :mega: JAX-PF and [JAX-CPFEM](https://github.com/SuperkakaSCU/JAX-CPFEM) are built on top of the same underlying [JAX-FEM](https://github.com/deepmodeling/jax-fem) ecosystem, the two can be tightly coupled within a single GPU-accelerated differentiable framework. This integration allows simultaneous treatment of process–structure and structure–property relationships, supporting multiscale simulations (PF-CPFEM) under complex internal and/or external applied fields.
 
