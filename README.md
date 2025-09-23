@@ -1,4 +1,4 @@
-__JAX-PF__: an efficient GPU-computing simulation for differentiable phase field (PF) simulaiton, built on top of [JAX-FEM](https://github.com/deepmodeling/jax-fem). Leveraging [JAX](https://github.com/google/jax), this tool addresses the need for co-designing of material and manufacturing processes, supporting the goals of the Materials Genome Initiative, and as a part of the Integrated Computational Materials Engineering. 
+__JAX-PF__: an efficient GPU-computing simulation for differentiable phase field (PF) simulaiton, built on top of [JAX-FEM](https://github.com/deepmodeling/jax-fem) leveraging [JAX](https://github.com/google/jax). 
 
 ## The concept of differentiable PF
 We want to emphasize the following four features that differential JAX-PF from other PF software:
@@ -22,7 +22,7 @@ Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipe
 <p align="middle">
   <img src="docs/materials/benchmarks/Validation_benchmark.jpg" width="800" />
 <p align="middle">
-    <em >Validation of benchmark problems in JAX-PF. While PRISMS-PF implements explicit time integration, JAX-PF provides both explicit and implicit schemes, with results showing agreement between the two frameworks.</em>
+    <em >Validation of benchmark problems in JAX-PF. </em>
 </p>
 
 
@@ -30,8 +30,7 @@ Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipe
 <br>
 
 ### Forward Case Studies
-Several representative applications are included, ranging from solidification to solid-state transformations: grain growth, static recrystallization, spinodal decomposition, precipitation with the Wheeler–Boettinger–McFadden (WBM) model, and precipitation with the Kim–Kim–Suzuki (KKS) model. 
-
+ 
 :fire: ***For each case, both explicit and implicit time stepping schemes are provided***
 
 <p align="middle">
@@ -57,7 +56,7 @@ Several representative applications are included, ranging from solidification to
 <p align="middle">
   <img src="docs/materials/applications/Case3.png" width="550" />
 <p align="middle">
-    <em >A 2D simulations of the multi-variants precipitate in an Mg-Nd alloy were simulated using different frameworks, based on Wheeler-Boettinger-McFadden (WBM) model.</em>
+    <em >A 2D simulations of the multi-variants precipitate in an Mg-Nd alloy.</em>
 </p>
 <br>
 <br>
@@ -72,7 +71,7 @@ Several representative applications are included, ranging from solidification to
 
 <div align="center">
   <img src="docs/materials/applications/Case5.gif" width="550" />
-  <div><em>Simulated recrystallized microstructure. White color represents the new recrystallized grains, and black color represents grain boundaries.</em></div>
+  <div><em>Static recrystallized microstructure.</em></div>
 </div>
 
 
@@ -80,7 +79,7 @@ Several representative applications are included, ranging from solidification to
 <br>
 
 ### Multiscale Simulations
-:mega: JAX-PF and [JAX-CPFEM](https://github.com/SuperkakaSCU/JAX-CPFEM) are built on top of the same underlying [JAX-FEM](https://github.com/deepmodeling/jax-fem) ecosystem, the two can be tightly coupled within a single GPU-accelerated differentiable framework. This integration allows simultaneous treatment of process–structure and structure–property relationships, supporting multiscale simulations (PF-CPFEM) under complex internal and/or external applied fields.
+:mega: Multiscale simulations (PF-CPFEM) using JAX-PF and [JAX-CPFEM](https://github.com/SuperkakaSCU/JAX-CPFEM), which are built on top of the same underlying [JAX-FEM](https://github.com/deepmodeling/jax-fem) ecosystem.
 
 
 <p align="middle">
@@ -96,9 +95,9 @@ Several representative applications are included, ranging from solidification to
 
 <p align="middle">
   <img src="docs/materials/inverse/calibration.png" width="550" />
-<p align="middle">
+<!-- <p align="middle">
     <em >Calibration of material parameters using differentiable PF simulations for multi-variants in Mg-Nd alloys. Subfigure (a) shows the evolution of the objective function with the number of optimization iterations, based on the synthetic imaging of the microstructure as the ground truth, as shown in the bottom subfigure in Fig. 6. Subfigure (b) shows the comparison between reference and calibrated material parameters.Subfigure (c) shows the comparison between the reference (red) and calibrated (blue) microstructural morphology of the different variants, with precipitate variants identified by concentrations in the range 0.12 to 0.16. Subfigure (d) and (e) shows the Concentration distributions for the reference and calibrated results across the domain.</em>
-</p>
+</p> -->
 <br>
 <br>
 
