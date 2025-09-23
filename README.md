@@ -65,7 +65,7 @@ Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipe
 <p align="middle">
   <img src="docs/materials/applications/Case4.png" width="550" />
 <p align="middle">
-    <em >A 3D simulations of the single-variants precipitate in an Mg-Nd alloy were simulated using different frameworks, based on Kim-Kim-Suzuki (KKS) model.</em>
+    <em >A 3D simulations of the single-variants precipitate in an Mg-Nd alloy.</em>
 </p>
 
 
@@ -84,14 +84,14 @@ Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipe
 
 <p align="middle">
   <img src="docs/materials/applications/CPPF.png" width="800" />
-<p align="middle">
+<!-- <p align="middle">
     <em >Coupled JAX-PF and JAX-CPFEM framework for process–structure–property integration.</em>
-</p>
+</p> -->
 
 
 
 ### Inverse Design
-:mega: A demos: calibration of material parameters using differentiable phase-field simulations.
+:mega: A demos: calibration of material parameters.
 
 <p align="middle">
   <img src="docs/materials/inverse/calibration.png" width="550" />
