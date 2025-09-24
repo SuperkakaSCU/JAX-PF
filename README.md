@@ -16,7 +16,7 @@ We want to emphasize the following four features that differential JAX-PF from o
 ### Benchmarks
 Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipedia.org/wiki/Allen%E2%80%93Cahn_equation), [Cahn–Hilliard](https://en.wikipedia.org/wiki/Cahn%E2%80%93Hilliard_equation), coupled Allen–Cahn and Cahn–Hilliard, each implemented with both explicit and implicit time integration, and [Eshelby inclusion](https://en.wikipedia.org/wiki/Eshelby%27s_inclusion) for lattice misfit in solid-state phase transformations.
 
-:mega: JAX-PF reproduces the benchmark results with good agreement to [PRISMS-PF](https://github.com/prisms-center/phaseField).
+:mega: Comparison between JAX-PF and [PRISMS-PF](https://github.com/prisms-center/phaseField).
 
 
 <p align="middle">
