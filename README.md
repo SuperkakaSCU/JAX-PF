@@ -1,4 +1,4 @@
-__JAX-PF__: an efficient GPU-computing simulation for differentiable phase field (PF) simulaiton, built on top of [JAX-FEM](https://github.com/deepmodeling/jax-fem). Leveraging [JAX](https://github.com/google/jax), this tool addresses the need for co-designing of material and manufacturing processes, supporting the goals of the Materials Genome Initiative, and as a part of the Integrated Computational Materials Engineering. 
+__JAX-PF__: an efficient GPU-computing simulation for differentiable phase field (PF) simulaiton, built on top of [JAX-FEM](https://github.com/deepmodeling/jax-fem) leveraging [JAX](https://github.com/google/jax). 
 
 ## The concept of differentiable PF
 We want to emphasize the following four features that differential JAX-PF from other PF software:
@@ -16,13 +16,13 @@ We want to emphasize the following four features that differential JAX-PF from o
 ### Benchmarks
 Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipedia.org/wiki/Allen%E2%80%93Cahn_equation), [Cahn–Hilliard](https://en.wikipedia.org/wiki/Cahn%E2%80%93Hilliard_equation), coupled Allen–Cahn and Cahn–Hilliard, each implemented with both explicit and implicit time integration, and [Eshelby inclusion](https://en.wikipedia.org/wiki/Eshelby%27s_inclusion) for lattice misfit in solid-state phase transformations.
 
-:mega: JAX-PF reproduces the benchmark results with good agreement to [PRISMS-PF](https://github.com/prisms-center/phaseField).
+:mega: Comparison between JAX-PF and [PRISMS-PF](https://github.com/prisms-center/phaseField).
 
 
 <p align="middle">
   <img src="docs/materials/benchmarks/Validation_benchmark.jpg" width="800" />
 <p align="middle">
-    <em >Validation of benchmark problems in JAX-PF. While PRISMS-PF implements explicit time integration, JAX-PF provides both explicit and implicit schemes, with results showing agreement between the two frameworks.</em>
+    <em >Validation of benchmark problems in JAX-PF. </em>
 </p>
 
 
@@ -30,8 +30,7 @@ Four benchmark problems are provided, including [Allen–Cahn](https://en.wikipe
 <br>
 
 ### Forward Case Studies
-Several representative applications are included, ranging from solidification to solid-state transformations: grain growth, static recrystallization, spinodal decomposition, precipitation with the Wheeler–Boettinger–McFadden (WBM) model, and precipitation with the Kim–Kim–Suzuki (KKS) model. 
-
+ 
 :fire: ***For each case, both explicit and implicit time stepping schemes are provided***
 
 <p align="middle">
@@ -57,7 +56,7 @@ Several representative applications are included, ranging from solidification to
 <p align="middle">
   <img src="docs/materials/applications/Case3.png" width="550" />
 <p align="middle">
-    <em >A 2D simulations of the multi-variants precipitate in an Mg-Nd alloy were simulated using different frameworks, based on Wheeler-Boettinger-McFadden (WBM) model.</em>
+    <em >A 2D simulations of the multi-variants precipitate in an Mg-Nd alloy.</em>
 </p>
 <br>
 <br>
@@ -66,13 +65,13 @@ Several representative applications are included, ranging from solidification to
 <p align="middle">
   <img src="docs/materials/applications/Case4.png" width="550" />
 <p align="middle">
-    <em >A 3D simulations of the single-variants precipitate in an Mg-Nd alloy were simulated using different frameworks, based on Kim-Kim-Suzuki (KKS) model.</em>
+    <em >A 3D simulations of the single-variants precipitate in an Mg-Nd alloy.</em>
 </p>
 
 
 <div align="center">
   <img src="docs/materials/applications/Case5.gif" width="550" />
-  <div><em>Simulated recrystallized microstructure. White color represents the new recrystallized grains, and black color represents grain boundaries.</em></div>
+  <div><em>Static recrystallized microstructure.</em></div>
 </div>
 
 
@@ -80,19 +79,26 @@ Several representative applications are included, ranging from solidification to
 <br>
 
 ### Multiscale Simulations
-:mega: JAX-PF and [JAX-CPFEM](https://github.com/SuperkakaSCU/JAX-CPFEM) are built on top of the same underlying [JAX-FEM](https://github.com/deepmodeling/jax-fem) ecosystem, the two can be tightly coupled within a single GPU-accelerated differentiable framework. This integration allows simultaneous treatment of process–structure and structure–property relationships, supporting multiscale simulations (PF-CPFEM) under complex internal and/or external applied fields.
+:mega: Multiscale simulations (PF-CPFEM) using JAX-PF and [JAX-CPFEM](https://github.com/SuperkakaSCU/JAX-CPFEM), which are built on top of the same underlying [JAX-FEM](https://github.com/deepmodeling/jax-fem) ecosystem.
 
 
 <p align="middle">
   <img src="docs/materials/applications/CPPF.png" width="800" />
-<p align="middle">
+<!-- <p align="middle">
     <em >Coupled JAX-PF and JAX-CPFEM framework for process–structure–property integration.</em>
-</p>
+</p> -->
 
 
 
 ### Inverse Design
-:mega: Comming soon!!
+:mega: A demos: calibration of material parameters.
+
+<p align="middle">
+  <img src="docs/materials/inverse/calibration.png" width="550" />
+<!-- <p align="middle">
+    <em >Calibration of material parameters using differentiable PF simulations for multi-variants in Mg-Nd alloys. Subfigure (a) shows the evolution of the objective function with the number of optimization iterations, based on the synthetic imaging of the microstructure as the ground truth, as shown in the bottom subfigure in Fig. 6. Subfigure (b) shows the comparison between reference and calibrated material parameters.Subfigure (c) shows the comparison between the reference (red) and calibrated (blue) microstructural morphology of the different variants, with precipitate variants identified by concentrations in the range 0.12 to 0.16. Subfigure (d) and (e) shows the Concentration distributions for the reference and calibrated results across the domain.</em>
+</p> -->
+<br>
 <br>
 
 
@@ -123,4 +129,6 @@ from the root directory. Use [Paraview](https://www.paraview.org/) for visualiza
 :mega: Comming soon!
 
 ## Citations
-If you found this library useful in academic or industry work, we appreciate your support if you consider starring the project on Github.
+If you found this library useful in academic or industry work, we appreciate your support if you consider 1) starring the project on Github, and 2) citing relevant papers:
+1) Efficient GPU-computing simulation platform JAX-CPFEM for differentiable crystal plasticity finite element method.
+   DOI: https://doi.org/10.1038/s41524-025-01528-2
