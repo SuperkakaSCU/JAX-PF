@@ -29,27 +29,27 @@ vtk_dir = os.path.join(output_dir, 'vtk')
 os.makedirs(vtk_dir, exist_ok=True)
 
 
- 
 
 class AllenCahn(Problem):
     def custom_init(self, params):
         ## Hu: phase field variable - order parameter eta
         self.fe_p = self.fes[0]
         self.params = params
-
+    
+    # Define the surface maps for Neumann BCs, if any. 
+    # For Allen-Cahn, we can assume zero Neumann BCs, so we return zero functions.
     # def get_surface_maps(self):
     #     def surface_map(u, x):
     #         return np.array([0.])
     #     return [surface_map, surface_map, surface_map, surface_map]
 
 
+    ## Hu: Define the universal kernel for the weak form of Allen-Cahn equation.
     def get_universal_kernel(self):
         ### Hu: AD can be directly used here (jax.grad)
         def f_local_grad(p):
             return 4*p*(p-1.0)*(p-0.5)
-
         vmap_f_local_grad = jax.jit(jax.vmap(f_local_grad))
-
 
         def universal_kernel(cell_sol_flat, x, cell_shape_grads, cell_JxW, cell_v_grads_JxW, *cell_internal_vars):
             """
@@ -63,8 +63,9 @@ class AllenCahn(Problem):
             cell_JxW: (num_vars, num_quads)
             cell_v_grads_JxW: (num_quads, num_nodes + ..., 1, dim)
             """
-
-            #### Hu: Unassemble the values to different variables
+            ######################
+            ## Hu: Unassemble the values to different variables
+            ######################
             cell_sol_p_old, p_old, chi = cell_internal_vars
 
             cell_sol_list = self.unflatten_fn_dof(cell_sol_flat) 
@@ -74,20 +75,18 @@ class AllenCahn(Problem):
                                      for i in range(self.num_vars)]
             cell_shape_grads_p = cell_shape_grads_list[0]
 
-            
             cell_v_grads_JxW_list = [cell_v_grads_JxW[:, self.num_nodes_cumsum[i]: self.num_nodes_cumsum[i+1], :, :]     
                                      for i in range(self.num_vars)]
             cell_v_grads_JxW_p = cell_v_grads_JxW_list[0]
 
             cell_JxW_p = cell_JxW[0]
             
-
             p_grads = np.sum(cell_sol_p[None, :, :, None] * cell_shape_grads_p[:, :, None, :], axis=1) # (num_quads, vec_p, dim)
             p_grads_old = np.sum(cell_sol_p_old[None, :, :, None] * cell_shape_grads_p[:, :, None, :], axis=1) # (num_quads, vec_p, dim)
             
 
             ######################
-            ## Hu: Weak form
+            ## Hu: Weak form for Allen-Cahn equation:
             ######################
             MnV = self.params['MnV']
             KnV = self.params['KnV']
@@ -109,7 +108,6 @@ class AllenCahn(Problem):
             # (num_quads, 1, vec_p) * (num_quads, num_nodes_p, 1) * (num_quads, 1, 1) -> (num_nodes_p, vec_p)
             val3 = np.sum(tmp3[:, None, None] * self.fe_p.shape_vals[:, :, None] * cell_JxW_p[:, None, None], axis=0)
 
-
             weak_form = [val1 + val2 + val3] # [(num_nodes_p, vec_p)]
 
             return jax.flatten_util.ravel_pytree(weak_form)[0]
@@ -119,9 +117,9 @@ class AllenCahn(Problem):
 
     def set_params(self, params):
         # Override base class method.
+        # Pass the internal variables to the universal kernel.
         sol_p_old, noise = params
-        print(type(sol_p_old))
-        print("sol_p_old", sol_p_old.shape)
+
         self.internal_vars = [sol_p_old[self.fe_p.cells],
                               self.fe_p.convert_from_dof_to_quad(sol_p_old)[:, :, 0], 
                               np.repeat(noise[:, None], self.fe_p.num_quads, axis=1)]
@@ -139,7 +137,6 @@ def simulation():
 
     json_file = os.path.join(input_dir, 'json/params.json')
     params = json_parse(json_file)
-    # print("params", params)
 
     dt = params['dt']
     t_OFF = params['t_OFF']
@@ -152,12 +149,11 @@ def simulation():
     meshio_mesh = rectangle_mesh(Nx=nx, Ny=ny, domain_x=Lx, domain_y=Ly)
     mesh = Mesh(meshio_mesh.points, meshio_mesh.cells_dict[cell_type])
 
-
     ## Hu: Sizes of domain
     Lx = np.max(mesh.points[:, 0])
     Ly = np.max(mesh.points[:, 1])
 
-
+    ## Hu: Define the boundary conditions
     def left(point):
         return np.isclose(point[0], 0., atol=1e-5)
 
@@ -170,20 +166,19 @@ def simulation():
     def bottom(point):
         return np.isclose(point[1], Ly, atol=1e-5)
 
-
-    def neumann_val(point):
-        return np.array([0.])
-
-
-    ### Hu: Variable: [p]
+    ######################
+    ## Hu: Definition of the problem
+    ## Hu: Variable: [p]
+    ######################
     problem = AllenCahn(mesh, vec=1, dim=2, ele_type=ele_type, additional_info=[params])
 
-
-    
     points = problem.fe_p.points
-    # print("points", points.shape)
+    domain_size = np.array([Lx, Ly])
+    
 
-    ## Hu: Definition of initial condition
+    ######################
+    ## Hu: Definition of initial nucleation centers and initial condition
+    ######################
     ## Hu: 12 nucleation centers
     centers = np.array([
         [0.1, 0.3],
@@ -202,10 +197,6 @@ def simulation():
     ## Hu: Nucleation radius
     rads = np.array([12., 14., 19., 16., 11., 12., 17., 15., 20., 10., 11., 14.])
 
-    
-    domain_size = np.array([Lx, Ly])
-
-
     def scalar_IC_fn(p):
         scaled_centers = centers * domain_size  
         diff = p - scaled_centers              
@@ -217,19 +208,21 @@ def simulation():
 
     batched_scalar_IC = jax.vmap(scalar_IC_fn, in_axes=(0,))
 
-    
     ## Hu: Initial condition of eta
     sol_p = batched_scalar_IC(points).reshape(-1, 1) 
-
 
     sol_list = [sol_p]
     save_sols(problem, sol_list, 0)
     
+    ## Hu: Random noise for nucleation such as recrystallization. 
+    ## Hu: This parameter does not affect the deterministic part of the simulation.
     chi = jax.random.uniform(jax.random.PRNGKey(0), shape=(problem.fe_p.num_cells,)) - 0.5
 
 
+    ######################
+    ## Hu: Time-stepping loop
+    ######################
     nIter = int(t_OFF/dt)
-
     for i in range(nIter + 1):
         print(f"\nStep {i + 1} in {nIter + 1}, time = {(i + 1)*dt}")
         
@@ -237,8 +230,6 @@ def simulation():
 
         sol_list = solver(problem, solver_options={'jax_solver': {}, 'initial_guess': sol_list})   
 
-        # if (i + 1) % 5 == 0:
-        #     save_sols(problem, sol_list, i + 1)
         save_sols(problem, sol_list, i + 1)
 
 

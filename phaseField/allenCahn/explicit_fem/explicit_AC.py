@@ -42,13 +42,6 @@ class AllenCahnMass(Problem):
         self.fe_p = self.fes[0]
         self.params = params
 
-
-    # def get_surface_maps(self):
-    #     def surface_map(u, x):
-    #         return np.array([0.])
-    #     return [surface_map, surface_map, surface_map, surface_map]
-
-
     def get_universal_kernel(self):
         def universal_kernel(cell_sol_flat, x, cell_shape_grads, cell_JxW, cell_v_grads_JxW):
             """
@@ -90,7 +83,6 @@ class AllenCahnMass(Problem):
             ## Hu: (num_quads, 1, vec_p) * (num_quads, num_nodes_p, 1) * (num_quads, 1, 1) -> (num_nodes_p, vec_p)
             val3 = np.sum(tmp3[:, None, None] * self.fe_p.shape_vals[:, :, None] * cell_JxW_p[:, None, None], axis=0)
 
-
             weak_form = [val3] # [(num_nodes_p, vec_p)]
 
             return jax.flatten_util.ravel_pytree(weak_form)[0]
@@ -105,15 +97,7 @@ class AllenCahnForce(Problem):
     def custom_init(self, params):
         ## Hu: phase field variable - order parameter eta
         self.fe_p = self.fes[0]
-
         self.params = params
-
-    # def get_surface_maps(self):
-    #     def surface_map(u, x):
-    #         # Some small noise to guide the dynamic relaxation solver
-    #         return np.array([0.])
-    #     return [surface_map, surface_map, surface_map, surface_map]
-
 
     def get_universal_kernel(self):
         ### Hu: AD can be directly used here (jax.grad)
@@ -121,7 +105,6 @@ class AllenCahnForce(Problem):
             return 4*p*(p-1.0)*(p-0.5)
 
         vmap_f_local_grad = jax.jit(jax.vmap(f_local_grad))
-
 
 
         def universal_kernel(cell_sol_flat, x, cell_shape_grads, cell_JxW, cell_v_grads_JxW):
@@ -137,7 +120,6 @@ class AllenCahnForce(Problem):
             cell_v_grads_JxW: (num_quads, num_nodes + ..., 1, dim)
             """
             #### Hu: Unassemble the values to different variables
-            
             cell_sol_list = self.unflatten_fn_dof(cell_sol_flat) 
             cell_sol_p = cell_sol_list[0]
             
@@ -157,7 +139,6 @@ class AllenCahnForce(Problem):
             p = np.sum(cell_sol_p[None, :, :] * self.fe_p.shape_vals[:, :, None], axis=1)[:, 0] # (num_quads,)
 
 
-
             ######################
             ## Hu: Weak form of RHS
             ######################
@@ -170,13 +151,9 @@ class AllenCahnForce(Problem):
 
             # Hu: Handle the term for free energy
             tmp2 = MnV * vmap_f_local_grad(p) # (num_quads,)
-            # tmp2 = MnV * vmap_f_local_grad(p_old) # (num_quads,)
-            # print(tmp2.shape)
             # (num_quads, 1, vec_p) * (num_quads, num_nodes_p, 1) * (num_quads, 1, 1) -> (num_nodes_p, vec_p)
             val2 = np.sum(tmp2[:, None, None] * self.fe_p.shape_vals[:, :, None] * cell_JxW_p[:, None, None], axis=0)
-            # print("val2", val2.shape)
-
-
+            
             weak_form = [val1 + val2] # [(num_nodes_p, vec_p)]
 
             return jax.flatten_util.ravel_pytree(weak_form)[0]
@@ -204,9 +181,7 @@ def get_mass(problem_mass):
         shape=(problem_mass.num_total_dofs_all_vars, problem_mass.num_total_dofs_all_vars))
 
     M = A_sp_scipy.sum(axis=1)
-
     return M
-
 
 
 def get_explicit_dynamics(problem_mass, problem_force):
@@ -275,20 +250,9 @@ def simulation():
         return np.isclose(point[1], Ly, atol=1e-5)
 
 
-
-
-
     ### Hu: Variable: [p]
     problem_mass = AllenCahnMass(mesh, vec=1, dim=2, ele_type=ele_type, additional_info=[params])
     problem_force = AllenCahnForce(mesh, vec=1, dim=2, ele_type=ele_type, additional_info=[params])
-
-
-    ## Hu: Definition of Neumann B.C.
-    # def neumann_val(point):
-    #     return np.array([0.])
-    # location_fns = [left, right, top, bottom]
-    # problem_mass = AllenCahnMass(mesh, vec=1, dim=2, ele_type=ele_type, location_fns=location_fns, additional_info=[params])
-    # problem_force = AllenCahnForce(mesh, vec=1, dim=2, ele_type=ele_type, location_fns=location_fns, additional_info=[params])
 
 
     points = problem_mass.fe_p.points
