@@ -126,9 +126,11 @@ from the root directory. Use [Paraview](https://www.paraview.org/) for visualiza
 
 
 ## Tutorial
-:mega: Comming soon!
+We shared the introduction of JAX-PF on [arXiv](https://arxiv.org/abs/2601.06079), which contains an inverse microstructure design case.
 
 ## Citations
 If you found this library useful in academic or industry work, we appreciate your support if you consider 1) starring the project on Github, and 2) citing relevant papers:
-1) Efficient GPU-computing simulation platform JAX-CPFEM for differentiable crystal plasticity finite element method.
+1) Efficient GPU-computing simulation platform JAX-PF for differentiable phase field model.
+   DOI: https://arxiv.org/abs/2601.06079
+2) Efficient GPU-computing simulation platform JAX-CPFEM for differentiable crystal plasticity finite element method.
    DOI: https://doi.org/10.1038/s41524-025-01528-2
