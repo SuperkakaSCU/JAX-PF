@@ -372,10 +372,10 @@ class PhaseField(Problem):
             heterMechAC1 = np.sum((C_beta - C_Mg)[:, :, :, :, :] * E2[:, None, None, :, :], axis = (3, 4))
             tmp_n1_3 = np.sum(heterMechAC1*E2, axis = (1, 2)) # (num_quads,)
 
-
-            tmp_n1_3 = +0.5*hn1V*tmp_n1_3
-            tmp_n2_3 = +0.5*hn2V*tmp_n1_3
+            
             tmp_n3_3 = +0.5*hn3V*tmp_n1_3
+            tmp_n2_3 = +0.5*hn2V*tmp_n1_3
+            tmp_n1_3 = +0.5*hn1V*tmp_n1_3
 
 
             tmp_n1 = Mn1V*(tmp_n1_1 + tmp_n1_2 + tmp_n1_3)
