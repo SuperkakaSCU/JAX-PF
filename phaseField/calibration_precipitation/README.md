@@ -12,5 +12,11 @@ __Case Study__: Calibration of material parameters
 </p>
 
 
+## How to run
+Place `phaseField/` in the `applications/` folder of JAX-FEM and run from the JAX-FEM root directory:
+```bash
+CUDA_VISIBLE_DEVICES=0 python -m applications.phaseField.calibration_precipitation.calibration_implicit_variants
+```
+
 ## Reference
 [1] https://arxiv.org/abs/2601.06079

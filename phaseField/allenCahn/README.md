@@ -26,7 +26,7 @@ where:
 
 1. **Chemical Free Energy**: $\int_\Omega f(\eta) d\Omega$
    - Double-well (or multi-well) form favors phase separation
-   - The derivate of chemical potential (driving force) is computed as: $$f'(\eta) = \frac{\partial f}{\partial \eta} = 4\eta(\eta - 1)(\eta - 0.5)$$
+   - The derivative of the chemical free energy density (driving force) is computed as: $$f'(\eta) = \frac{\partial f}{\partial \eta} = 4\eta(\eta - 1)(\eta - 0.5)$$
 
 2. **Interfacial Energy Density**: $\int_\Omega \frac{\kappa}{2}|\nabla\eta|^2 d\Omega$
    - Arising from the gradient energy terms
@@ -160,22 +160,22 @@ allenCahn/
 
 ### Key Parameters in Configuration
 
-All schemes share common parameters in `input/json/params.json`:
+Each scheme reads its parameters from `input/json/params.json`. The values below are those of `implicit_fem` and `diff_fem`; `explicit_fem` uses a finer mesh and a smaller time step (given in parentheses):
 
 ```json
 {
-  "dt": 0.01,           // Time step size
-  "t_OFF": 10.0,        // Total simulation time
-  "Lx": 1.0,            // Domain length in x
-  "Ly": 1.0,            // Domain length in y
-  "nx": 64,             // Number of elements in x
-  "ny": 64,             // Number of elements in y
-  "MnV": 0.1,           // M_eta (mobility coefficient)
-  "KnV": 0.01           // kappa (interface parameter)
+  "dt": 1.0,            // Time step size (explicit_fem: 0.001)
+  "t_OFF": 5.0,         // Total simulation time
+  "Lx": 100.0,          // Domain length in x
+  "Ly": 100.0,          // Domain length in y
+  "nx": 64,             // Number of elements in x (explicit_fem: 128)
+  "ny": 64,             // Number of elements in y (explicit_fem: 128)
+  "MnV": 1.0,           // M_eta (mobility coefficient)
+  "KnV": 2.0            // kappa (gradient energy coefficient)
 }
 ```
 
-## 4. Typical Applications
+## 5. Typical Applications
 - Crystal growth and solidification
 - Grain coarsening
 - Crack propagation in brittle materials

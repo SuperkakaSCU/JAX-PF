@@ -200,4 +200,6 @@ class CahnHilliard(Problem):
         self.internal_vars = self.initial_internal_vars + self.internal_vars
 
     def set_initial_guess(self, initial_sol):
+        if any(isinstance(x, jax.core.Tracer) for x in jax.tree_util.tree_leaves(initial_sol)):
+            return
         self.initial_guess = initial_sol

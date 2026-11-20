@@ -28,7 +28,7 @@ from jax import config
 
 config.update("jax_enable_x64", True)
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 onp.set_printoptions(threshold=sys.maxsize, linewidth=1000, suppress=True, precision=6)
 
@@ -241,7 +241,7 @@ def simulation():
 
         print(f"Start solving u at Step {i + 1} using implicit solver...")
         # sol_u_list = solver(problem_u, solver_options={'jax_solver': {}, 'initial_guess': sol_u_list, 'tol': 1.0e-7}) 
-        sol_u_list = solver(problem_u, solver_options={'umfpack_solver': {}, 'initial_guess': sol_u_list, 'tol': 1.0e-7}) 
+        sol_u_list = solver(problem_u, solver_options={'spsolve_solver': {}, 'initial_guess': sol_u_list, 'tol': 1.0e-7}) 
 
         print(np.max(sol_u_list[0]), np.min(sol_u_list[0]))
         
@@ -260,7 +260,7 @@ def simulation():
 
         print(f"Solve [c, mu, n1, n2, n3] at Step {i + 1} using implicit solver based on [c, mu, n1, n2, n3] at Step {i} and [u] at Step {i + 1}")
         # sol_phaseField_list = solver(phaseField, solver_options={'jax_solver': {}, 'initial_guess': sol_phaseField_list, 'tol': 1.0e-6})   
-        sol_phaseField_list = solver(phaseField, solver_options={'umfpack_solver': {}, 'initial_guess': sol_phaseField_list, 'tol': 1.0e-6})  
+        sol_phaseField_list = solver(phaseField, solver_options={'spsolve_solver': {}, 'initial_guess': sol_phaseField_list, 'tol': 1.0e-6})  
 
         logger.debug(f"max of c dofs = {np.max(sol_phaseField_list[0])}, min of c dofs = {np.min(sol_phaseField_list[0])}")
         logger.debug(f"max of n1 dofs = {np.max(sol_phaseField_list[2])}, min of n1 dofs = {np.min(sol_phaseField_list[2])}")

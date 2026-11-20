@@ -21,7 +21,7 @@ from jax_fem.problem import Problem
 from jax import config
 config.update("jax_enable_x64", True)
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 onp.set_printoptions(threshold=sys.maxsize, linewidth=1000, suppress=True, precision=6)
 

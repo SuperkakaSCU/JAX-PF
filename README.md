@@ -108,6 +108,8 @@ JAX-PF supports Linux and macOS, which depend on JAX-FEM.
 ### Install JAX-FEM
 JAX-FEM is a collection of several numerical tools, including the Finite Element Method (FEM). See JAX-FEM installation [instructions](https://github.com/deepmodeling/jax-fem?tab=readme-ov-file). Depending on your hardware, you may install the CPU or GPU version of JAX. Both will work, while the GPU version usually gives better performance.
 
+JAX-PF has been tested with JAX-FEM 0.0.12 (commit `01d11bd`, November 2026) and JAX 0.12.1 (Python 3.13, CUDA 13). The scripts select the linear solver through the JAX-FEM `solver_options` key `spsolve_solver` (introduced in JAX-FEM in April 2026, replacing `umfpack_solver`); older JAX-FEM releases are not supported.
+
 ### Install Neper
 [Neper](https://neper.info/) is a free/open-source software package for polycrystal generation and meshing. It can be used to generate polycrystals with a wide variety of morphological properties. A good [instruction](https://www.youtube.com/watch?v=Wy9n756wFu4&list=PLct8iNZXls-BMU7aleWoSoxgD8OFFe48W&index=5) video is on Youtube.
 
@@ -124,13 +126,20 @@ python -m applications.phaseField.allenCahn.explicit_fem.explicit_AC
 ```
 from the root directory. Use [Paraview](https://www.paraview.org/) for visualization.
 
+### GPU Selection
+The scripts do not pin a GPU. On a multi-GPU machine, choose the device with the `CUDA_VISIBLE_DEVICES` environment variable, e.g.
+```bash
+CUDA_VISIBLE_DEVICES=0 python -m applications.phaseField.allenCahn.explicit_fem.explicit_AC
+```
+By default JAX preallocates most of the GPU memory; set `XLA_PYTHON_CLIENT_PREALLOCATE=false` if the GPU is shared with other jobs.
+
 
 ## Tutorial
-We shared the introduction of JAX-PF on [arXiv](https://arxiv.org/abs/2601.06079), which contains an inverse microstructure design case.
+We shared the introduction of JAX-PF in [Computer Physics Communications](https://doi.org/10.1016/j.cpc.2026.110523) (preprint on [arXiv](https://arxiv.org/abs/2601.06079)), which contains an inverse microstructure design case.
 
 ## Citations
 If you found this library useful in academic or industry work, we appreciate your support if you consider 1) starring the project on Github, and 2) citing relevant papers:
 1) Efficient GPU-computing simulation platform JAX-PF for differentiable phase field model.
-   DOI: https://arxiv.org/abs/2601.06079
+   Computer Physics Communications (2026). DOI: https://doi.org/10.1016/j.cpc.2026.110523
 2) Efficient GPU-computing simulation platform JAX-CPFEM for differentiable crystal plasticity finite element method.
    DOI: https://doi.org/10.1038/s41524-025-01528-2

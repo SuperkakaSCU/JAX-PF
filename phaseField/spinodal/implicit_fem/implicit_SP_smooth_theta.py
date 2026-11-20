@@ -20,7 +20,7 @@ from jax_fem.problem import Problem
 from jax import config
 config.update("jax_enable_x64", True)
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 onp.set_printoptions(threshold=sys.maxsize, linewidth=1000, suppress=True, precision=6)
 
@@ -247,7 +247,7 @@ def simulation():
         # [sol_p, sol_mu]
         problem.set_params([sol_list[0], sol_list[1]])
 
-        sol_list = solver(problem, solver_options={'jax_solver': {}, 'initial_guess': sol_list, 'line_search_flag': False})   
+        sol_list = solver(problem, solver_options={'spsolve_solver': {}, 'initial_guess': sol_list, 'line_search_flag': False})
 
         
         if (i + 1) % 1000 == 0:

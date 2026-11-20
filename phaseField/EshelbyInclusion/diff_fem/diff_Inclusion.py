@@ -39,7 +39,7 @@ def ad_wrapper(problem, solver_options={}, adjoint_solver_options={}):
     def fwd_pred(params):
         problem.set_params(params)
         initial_guess = problem.initial_guess if hasattr(problem, 'initial_guess') else None
-        sol_list = solver(problem, {'umfpack_solver':{}, 'initial_guess': initial_guess, 'tol': 1e-9, 'line_search_flag': False})
+        sol_list = solver(problem, {'spsolve_solver':{}, 'initial_guess': initial_guess, 'tol': 1e-9, 'line_search_flag': False})
         problem.set_initial_guess(sol_list)
         return sol_list
 
@@ -50,7 +50,7 @@ def ad_wrapper(problem, solver_options={}, adjoint_solver_options={}):
     def f_bwd(res, v):
         logger.info("Running backward and solving the adjoint problem...")
         params, sol_list = res
-        vjp_result = implicit_vjp(problem, sol_list, params, v, adjoint_solver_options={'umfpack_solver':{}, 'initial_guess': sol_list, 'tol': 1e-9, 'line_search_flag': False})
+        vjp_result = implicit_vjp(problem, sol_list, params, v, adjoint_solver_options={'spsolve_solver':{}, 'initial_guess': sol_list, 'tol': 1e-9, 'line_search_flag': False})
         return (vjp_result, )
 
     fwd_pred.defvjp(f_fwd, f_bwd)

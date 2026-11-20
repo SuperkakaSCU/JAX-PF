@@ -203,8 +203,7 @@ class CoupledACCH(Problem):
             MnV = self.params['MnV'] # The AC mobility, MnV
             KnV = self.params['KnV'] # Gradient energy coefficient
             # (num_quads)
-            # tmp1_n = MnV * ((fb - fa)*h_n)
-            tmp1_n = MnV * ((fbc - fac)*h_n)
+            tmp1_n = MnV * ((fb - fa)*h_n)
             # (num_quads, 1, 1) * (num_quads, num_nodes_p, 1) * (num_quads, 1, 1) -> (num_nodes_p, vec_p)
             val1_n = np.sum(tmp1_n[:, None, None] * self.fe_n.shape_vals[:, :, None] * cell_JxW_n[:, None, None], axis=0)
 

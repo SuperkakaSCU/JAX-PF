@@ -4,7 +4,7 @@ Implicit finite element solver for coupled Allen Cahn & Cahn Hilliard & Momentum
 Mg precipitate of single varient considering WBM model
 """
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 import jax
 import jax.numpy as np
@@ -45,6 +45,7 @@ crt_dir = os.path.dirname(__file__)
 input_dir = os.path.join(crt_dir, 'input')
 output_dir = os.path.join(crt_dir, 'output')
 calibration_dir = os.path.join(output_dir, 'calibration')
+os.makedirs(calibration_dir, exist_ok=True)
 
 
 alpha_dir = os.path.join(calibration_dir, f'alpha.txt')
@@ -76,7 +77,7 @@ def ad_wrapper(problem, solver_options={}, adjoint_solver_options={}):
     def fwd_pred(params):
         problem.set_params(params)
         initial_guess = problem.initial_guess if hasattr(problem, 'initial_guess') else None
-        sol_list = solver(problem, {'umfpack_solver':{}, 'initial_guess': initial_guess, 'tol': 1e-7, 'line_search_flag': False})
+        sol_list = solver(problem, {'spsolve_solver':{}, 'initial_guess': initial_guess, 'tol': 1e-7, 'line_search_flag': False})
         problem.set_initial_guess(sol_list)
         return sol_list
 
@@ -87,7 +88,7 @@ def ad_wrapper(problem, solver_options={}, adjoint_solver_options={}):
     def f_bwd(res, v):
         logger.info("Running backward and solving the adjoint problem...")
         params, sol_list = res
-        vjp_result = implicit_vjp(problem, sol_list, params, v, adjoint_solver_options={'umfpack_solver':{}, 'initial_guess': sol_list, 'tol': 1e-7, 'line_search_flag': False})
+        vjp_result = implicit_vjp(problem, sol_list, params, v, adjoint_solver_options={'spsolve_solver':{}, 'initial_guess': sol_list, 'tol': 1e-7, 'line_search_flag': False})
         return (vjp_result, )
 
     fwd_pred.defvjp(f_fwd, f_bwd)
@@ -339,6 +340,7 @@ def problem():
 
             print(f"Start solving u at Step {i + 1} using implicit solver...")
             sol_u_list = fwd_pred_u(params_u)
+            problem_u.internal_vars = params_u
             
             print(f"**Update PF result: [c, mu, n1, n2, n3] at Step {i + 1} based on Step {i + 1}'s u field**")
             print(f"Pass u at Step {i + 1} to [c, mu, n1, n2, n3]")
@@ -351,6 +353,7 @@ def problem():
 
             print(f"Solve [c, mu, n1, n2, n3] at Step {i + 1} using implicit solver based on [c, mu, n1, n2, n3] at Step {i} and [u] at Step {i + 1}...")
             sol_phaseField_list = fwd_pred_pf(params_pf)
+            phaseField.internal_vars = params_pf
 
 
             print(f"**Update u at Step {i + 1} based on Step {i}'s PF result: [c, mu, n1, n2, n3]**")

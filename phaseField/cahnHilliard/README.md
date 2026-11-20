@@ -27,7 +27,7 @@ where:
 1. **Chemical Free Energy**: $\int_\Omega f(c) d\Omega$
    - Double-well (or multi-well) form favors phase separation
    - $f(c)$ is the local chemical free energy density
-   - The derivative of chemical potential (driving force) is computed as: $$f'(c) = \frac{\partial f}{\partial c} = 4c(c - 1)(c - 0.5)$$
+   - The derivative of the chemical free energy density (driving force) is computed as: $$f'(c) = \frac{\partial f}{\partial c} = 4c(c - 1)(c - 0.5)$$
 
 2. **Interfacial Energy**: $\int_\Omega \frac{\kappa}{2}|\nabla c|^2 d\Omega$
    - Arising from the gradient energy terms
@@ -60,15 +60,17 @@ The θ-method provides a family of time integration schemes [1]. For the mixed f
 
 $$\frac{c^{n+1} - c^n}{\Delta t} - \nabla \cdot \mathbf{M_{c}}\nabla\mu^{n+\theta} = 0$$
 
-$$\mu^{n+1} - \frac{\partial f}{\partial c}(c^{n+1}) + \kappa \nabla^2 c^{n+1} = 0$$
+$$\mu^{n+1} - \frac{\partial f}{\partial c}(c^{n}) + \kappa \nabla^2 c^{n+1} = 0$$
 
 where:
 
 $$\mu^{n+\theta} = (1-\theta)\mu^n + \theta\mu^{n+1}$$
 
+The nonlinear chemical term $f'(c)$ is evaluated at the previous time step $c^n$ (semi-implicit treatment), while the gradient term is kept implicit, so that the resulting system is linear in $(c^{n+1}, \mu^{n+1})$.
+
 **Special Cases:**
 - $\theta = 0$: Forward Euler
-- $\theta = 0.5$: $\theta$-Method
+- $\theta = 0.5$: Crank-Nicolson
 - $\theta = 1$: Backward Euler
 
 ---
@@ -81,7 +83,7 @@ Find $(c^{n+1}, \mu^{n+1}) \in V \times V$ such that for all test functions $(q,
 
 $$\int_\Omega \frac{c^{n+1} - c^n}{\Delta t} q d\Omega + \int_\Omega \mathbf{M_{c}}\nabla\mu^{n+\theta} \cdot \nabla q d\Omega = 0$$
 
-$$\int_\Omega \mu^{n+1} w d\Omega - \int_\Omega f'(c^{n+1}) w d\Omega - \int_\Omega \kappa \nabla c^{n+1} \cdot \nabla w d\Omega = 0$$
+$$\int_\Omega \mu^{n+1} w d\Omega - \int_\Omega f'(c^{n}) w d\Omega - \int_\Omega \kappa \nabla c^{n+1} \cdot \nabla w d\Omega = 0$$
 
 ### Implementation Details
 
@@ -100,7 +102,7 @@ The weak form is assembled from six main contributions:
    ```
    val2 = ∫ M_c·∇μⁿ⁺ᶿ·∇q dΩ
    tmp2 = M_c * ∇μⁿ⁺ᶿ
-   ∇μⁿ⁺ᶿ = (1 - θ)·μⁿ + θ·μⁿ⁺¹
+   ∇μⁿ⁺ᶿ = (1 - θ)·∇μⁿ + θ·∇μⁿ⁺¹
    ```
 
 **Total for Equation 1:**
@@ -138,36 +140,39 @@ $$\text{RES}_\mu = \text{val3} + \text{val4} + \text{val5} = 0$$
 
 ```
 cahnHilliard/
-├── implicit_fem/          # Implicit θ-method solver
-│   ├── implicit_CH_theta.py     # Main implicit solver with θ-method
-│   ├── input/
+├── implicit_fem/                # Implicit solvers
+│   ├── implicit_CH.py           # Backward Euler (μ fully implicit)
+│   ├── implicit_CH_theta.py     # θ-method (θ = 0.5, Crank-Nicolson in μ)
+│   ├── input/json/params_CH.json
 │   └── output/
-├── explicit_fem/          # Explicit time stepping solver
-│   ├── explicit_CH.py     # Main explicit solver
-│   ├── input/
+├── explicit_fem/                # Explicit time stepping solver
+│   ├── explicit_CH.py           # Main explicit solver
+│   ├── input/json/params_CH.json
 │   └── output/
-├── diff_fem/              # Differentiation-based (AD) solver
-│   ├── diff_CH.py         # AD-based Cahn-Hilliard solver
-│   ├── input/
+├── diff_fem/                    # Differentiable (AD) solver
+│   ├── CH_weak.py               # Weak form definition (θ-method)
+│   ├── diff_CH_theta.py         # AD-based sensitivity driver
+│   ├── input/json/params_CH.json
 │   └── output/
 └── README.md
 ```
 
 ### Key Parameters in Configuration
 
-All schemes share common parameters in `input/json/params.json`:
+Each scheme reads its parameters from `input/json/params_CH.json`. The values below are those of `implicit_fem` and `diff_fem`; `explicit_fem` uses a much smaller time step (given in parentheses). The θ parameter is set in the solver class (`self.theta = 0.5`), not in the JSON file:
 
 ```json
 {
-  "dt": 5.0e-06,        // Time step size
-  "t_OFF": 50.0e-06,    // Total simulation time
-  "Lx": 1.0,            // Domain length in x
-  "Ly": 1.0,            // Domain length in y
+  "dt": 1.0,            // Time step size (explicit_fem: 1.0e-7)
+  "t_OFF": 50.0,        // Total simulation time (explicit_fem: 0.05)
+  "Lx": 100.0,          // Domain length in x
+  "Ly": 100.0,          // Domain length in y
+  "Lz": 100.0,          // Domain length in z (read but unused in the 2D cases)
   "nx": 64,             // Number of elements in x
   "ny": 64,             // Number of elements in y
+  "nz": 64,             // Number of elements in z (read but unused in the 2D cases)
   "MnV": 1.0,           // M_c (mobility coefficient)
-  "KnV": 1.0e-02,       // κ (gradient energy coefficient)
-  "theta": 0.5          // θ parameter (0.5 = Crank-Nicolson)
+  "KnV": 1.5            // κ (gradient energy coefficient)
 }
 ```
 ---

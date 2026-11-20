@@ -11,7 +11,7 @@ from jax_fem.utils import save_sol, modify_vtu_file, json_parse
 
 from applications.phaseField.allenCahn.diff_fem.AC_weak import AllenCahn
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
 from jax import config
 config.update("jax_enable_x64", True)

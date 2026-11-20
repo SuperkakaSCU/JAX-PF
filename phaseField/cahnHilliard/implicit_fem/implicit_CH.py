@@ -305,7 +305,7 @@ def simulation():
         problem.set_params([sol_list[0], sol_list[1]])
 
 
-        sol_list = solver(problem, solver_options={'jax_solver': {}, 'initial_guess': sol_list, 'tol': 1e-9})   
+        sol_list = solver(problem, solver_options={'spsolve_solver': {}, 'initial_guess': sol_list, 'tol': 1e-9})
         
         
         if (i + 1) % 10 == 0:
